@@ -17,4 +17,5 @@ public class BookService {
     public Book addBook(String title, String author, String description, MultipartFile image){
        return bookRepository.save(new Book(null, title, author, description, "", LocalDateTime.now(), LocalDateTime.now()));
     }
+
 }

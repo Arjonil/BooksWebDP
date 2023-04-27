@@ -26,4 +26,5 @@ public class BookController {
         Book newBook = bookService.addBook(title, author, description, image);
         return ResponseEntity.ok(newBook);
     }
+
 }
