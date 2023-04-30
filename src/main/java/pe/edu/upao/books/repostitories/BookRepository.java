@@ -2,14 +2,15 @@ package pe.edu.upao.books.repostitories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import pe.edu.upao.books.models.Book;
 
-import java.util.List;
+import java.util.*;
 
+@Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
-
-    @Query("select b from Book b where b.title = :title")
-    public List<Book> listByTitle(String title);
+    @Query("SELECT b, AVG(r.rating) FROM Book b LEFT JOIN b.reviews r GROUP BY b.id")
+            List<Object[]> findBooksWithAvgRating();
 }
 
 /*
