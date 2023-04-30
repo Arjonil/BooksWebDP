@@ -1,13 +1,15 @@
 package pe.edu.upao.books.models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "books")
-public class Book {
+@Table(name = "reviews")
+public class Review {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,13 +18,10 @@ public class Book {
     private String title;
 
     @Column(nullable = false)
-    private String author;
+    private String comment;
 
     @Column(nullable = false)
-    private String description;
-
-    @Column(name = "image_url")
-    private String imageUrl;
+    private Integer rating;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -30,29 +29,27 @@ public class Book {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "book")
-    private List<Review> reviews;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
 
-    public Book() {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public Review() {
     }
 
-    public Book(String title, String author, String description, String imageUrl) {
-        this.title = title;
-        this.author = author;
-        this.description = description;
-        this.imageUrl = imageUrl;
-    }
-
-    public Book(Long id, String title, String author, String description, String imageUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Review(Long id, String title, String comment, Integer rating, LocalDateTime createdAt, LocalDateTime updatedAt, Book book, User user) {
         this.id = id;
         this.title = title;
-        this.author = author;
-        this.description = description;
-        this.imageUrl = imageUrl;
+        this.comment = comment;
+        this.rating = rating;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.book = book;
+        this.user = user;
     }
-
 
     public Long getId() {
         return id;
@@ -70,28 +67,20 @@ public class Book {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getComment() {
+        return comment;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public String getDescription() {
-        return description;
+    public Integer getRating() {
+        return rating;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -108,6 +97,22 @@ public class Book {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }
