@@ -1,21 +1,26 @@
 package pe.edu.upao.books.services;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pe.edu.upao.books.models.Book;
 import pe.edu.upao.books.repostitories.BookRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
-public class BookService {
-    public final BookRepository bookRepository;
+public interface BookService {
+    Book createBook(Book book);
+    Book getBookById(Long id);
+    List<Book> getAllBooks();
 
-    public BookService(BookRepository bookRepository){
-        this.bookRepository = bookRepository;
-    }
+    Book addBook(Book book);
 
-    public Book addBook(String title, String author, String description, MultipartFile image){
-       return bookRepository.save(new Book(null, title, author, description, "", LocalDateTime.now(), LocalDateTime.now()));
-    }
+    Book updateBook(Long id, Book book);
+    void deleteBook(Long id);
+    List<Book> searchBooks(String keyword);
 
 }
+
